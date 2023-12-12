@@ -44,7 +44,7 @@
             @include m.boton(v.$indigo, v.$blanco);
         }
         .cerrar-modal {
-            @include m.boto1n(v.$naranja, v.$blanco);
+            @include m.boton(v.$naranja, v.$blanco);
         }
         
         &.animar {
@@ -61,3 +61,4 @@
     }
 
 }
+

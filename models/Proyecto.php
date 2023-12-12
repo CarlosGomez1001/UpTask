@@ -8,10 +8,10 @@ class Proyecto extends ActiveRecord {
     protected static $tabla = 'proyectos';
     protected static $columnasDB = [ 'id', 'proyecto', 'url', 'propietarioid'];
 
-    public static $id;
-    public static $proyecto;
-    public static $url;
-    public static $propietarioid;
+    public $id;
+    public $proyecto;
+    public $url;
+    public $propietarioid;
 
     public function __construct($args = []) {
 

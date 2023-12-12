@@ -33,7 +33,7 @@
             setTimeout(() => {
                 const formulario = document.querySelector('.formulario');
                 formulario.classList.add('animar');
-            },0);
+             },0);
                         
             
             modal.addEventListener('click',function(e) {
@@ -67,9 +67,11 @@
             mostrarAlerta('El nombre de la tarea es obligatorio', 'error', document.querySelector('.formulario legend'));
             return;
         }
-
+        
+        
         agregarTarea(tarea);
     }
+
 
     //Muestra un mensaje en la interface
     function mostrarAlerta(mensaje, tipo, referencia) {
@@ -94,8 +96,48 @@
     }
 
     //Consultar el servidor para añadir la tarea
-    function agregarTarea(tarea)  {
+    async function agregarTarea(tarea)  {
+        //Construir la peticion
+        
+        const datos = new FormData(); 
+        datos.append('nombre', tarea);
+        datos.append('proyectoid', obtenerProyecto());
 
+        
+        try {
+            const url = 'http://localhost:3000/api/tarea';
+            const respuesta = await fetch(url, {
+                method: 'POST',
+                body: datos
+            });
+
+            
+            const resultado = await respuesta.json();
+            console.log(resultado);
+
+            mostrarAlerta(resultado.mensaje, resultado.tipo, document.querySelector('.formulario legend'));
+
+            if(resultado.tipo === 'exito') {
+                const modal = document.querySelector('.modal');
+                setTimeout(() => {
+                    modal.remove();
+                }, 3000);
+            }
+
+
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+
+    function obtenerProyecto() {
+        //URLSearchParams trae datos de la Url actual en la se esta atualmente en el navegador
+        const proyectoParams = new URLSearchParams(window.location.search);
+        //Object.fromEntries(); Funcion helper que convirte un arreglo de pares en un objeto llave-valor
+        const proyecto = Object.fromEntries(proyectoParams.entries());
+        //Por lo tanto, la funcion fromEntries convirte el dato extraido de windows.location.serch con la funcion URLSerchParams 
+        return proyecto.id;
     }
 
 })();

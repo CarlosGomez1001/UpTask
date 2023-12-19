@@ -35,6 +35,10 @@
     p {
         font-size: 1.4rem;
 
+        &:hover{
+            cursor: pointer;
+        }
+
     }
 
     .opciones {

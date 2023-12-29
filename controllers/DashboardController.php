@@ -4,7 +4,7 @@ namespace Controllers;
 
 use MVC\Router;
 use Model\Proyecto;
-
+use Model\Usuario;
 
 class DashboardController{
     
@@ -83,16 +83,26 @@ class DashboardController{
 
     public static function perfil(Router $router) {
 
-        session_start();
+        session_start(); 
         isAuth();
+        $usuario = Usuario::find($_SESSION['id']);
+        $alertas = [];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $usuario->sincronizar($_POST);
+
+            $alertas = $usuario->validar_perfil();
+            // debuguear($alertas);
+        }
         
         $router->render('dashboard/perfil', [
-            'titulo' => 'Perfil'
+            'titulo' => 'Perfil',
+            'usuario' => $usuario,
+            'alertas' => $alertas
         ]);
     }
-
-    
 }
 
 
 
+ 

@@ -6,7 +6,7 @@
 
     const nuevaTareaBtn = document.querySelector('#agregar-tarea');
     nuevaTareaBtn.addEventListener('click', function() {
-        mostrarFormulario(false);
+        mostrarFormulario();
     });
 
     //Filtros de busqueda
@@ -21,14 +21,16 @@
         const filtro = e.target.value;
 
         if(filtro !== '') {
-            console.log('Tenemos que filtrar');
+            filtradas = tareas.filter(tarea => tarea.estado === filtro);
         } else {
             filtradas = [];
         }
 
-        console.log(filtradas);
+        mostrarTareas();
     }
 
+
+    
     async function obtenertareas() {
 
         try {
@@ -47,8 +49,15 @@
 
     function mostrarTareas() {
         limpiarTareas();
+        totalPendientes();
+        totalCompletas();
 
-        if(tareas.length === 0){
+
+
+        const arrayTareas = filtradas.length ? filtradas : tareas;
+ 
+
+        if(arrayTareas.length === 0){
             const contenedorTareas = document.querySelector('#listado-tareas');
 
             const textoNoTareas = document.createElement('LI');
@@ -65,7 +74,7 @@
 
         }
 
-        tareas.forEach(tarea =>{
+        arrayTareas.forEach(tarea =>{
             const contenedorTareas = document.createElement('LI');
             contenedorTareas.dataset.tareaId = tarea.id;
             contenedorTareas.classList.add('tarea');
@@ -109,6 +118,28 @@
 
 
         });
+    }
+
+    function totalPendientes() {
+        const totalPendientes = tareas.filter(tarea => tarea.estado=== "0");
+        const pendientesRadio =  document.querySelector('#pendientes');
+    
+        if(totalPendientes.length == 0) {
+            pendientesRadio.disabled = true;
+        }else {
+            pendientesRadio.disabled = false;
+        }
+    }
+
+    function totalCompletas() {
+        const totalCompletas = tareas.filter(tarea => tarea.estado=== "1");
+        const completasRadio =  document.querySelector('#completadas');
+    
+        if(totalCompletas.length == 0) {
+            completasRadio.disabled = true;
+        }else {
+            completasRadio.disabled = false;
+        }
     }
 
     function mostrarFormulario(editar = false, tarea = {}) {

@@ -17,7 +17,7 @@
         <div class="campo">
             <label for="nombre">Nuevo Password</label>
             <input 
-                type="passeword"                
+                type="password"                
                 name="password_nuevo"
                 placeholder="Tu Password Nuevo"
             />

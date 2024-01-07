@@ -31,7 +31,7 @@ class Usuario extends ActiveRecord {
         
     }   
     
-    public function validarLogin() {
+    public function validarLogin() : array {
         if(!$this->email) {
             self::$alertas['error'][] = 'El Email es obligatorio';
         }
@@ -47,7 +47,7 @@ class Usuario extends ActiveRecord {
 
     }
 
-    public function validarNuevaCuenta(){
+    public function validarNuevaCuenta(): array {
         if(!$this->nombre) {
             self::$alertas['error'][] = 'El nombre del Usuario es Obligatorio';
         }
@@ -68,7 +68,7 @@ class Usuario extends ActiveRecord {
         return self::$alertas;
     }
 
-    public function validarEmail() {
+    public function validarEmail() : array {
         if(!$this->email) {
             self::$alertas['error'][] = 'El Email es obligatorio';
         }
@@ -81,7 +81,7 @@ class Usuario extends ActiveRecord {
            
     }
 
-    public function validarPassword(){
+    public function validarPassword() : array {
         
         if(!$this->password) {
             self::$alertas['error'][] = 'El Password no puede ir vacio';
@@ -94,16 +94,21 @@ class Usuario extends ActiveRecord {
         return self::$alertas;
     }
 
-    public function hashPassword() {
+    //Comprobar el password
+    public function comprobar_password() : bool {
+        return password_verify($this->password_actual, $this->password);
+    }
+
+    public function hashPassword() : void {
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
 
     }        
 
-    public function crearToken() {
+    public function crearToken() : void {
         $this->token = uniqid();
     }
 
-    public function validar_perfil() {
+    public function validar_perfil() : array {
         if(!$this->nombre) {
             self::$alertas['error'][] = 'El Nombre es Obligatorio';
         }
@@ -114,7 +119,7 @@ class Usuario extends ActiveRecord {
         return self::$alertas;
     }
 
-    public function nuevo_password() {
+    public function nuevo_password() : array {
         if(!$this->password_actual){
             self::$alertas['error'][] = 'El Password Actual no puede ir vacio';
         }
